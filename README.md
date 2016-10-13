@@ -1,5 +1,9 @@
 # WebCrawlerCSharp
-C# Web Crawler and Data Aggregator- Aggregates data and saves it to a DB. Following is the printout from the current -h command, it should give you an idea of what functionality to expect in the current version.
+C# Web Crawler and Data Aggregator- Aggregates data and saves it to a DB. 
+
+If you wish to simply run the existing windows binary, the current release is located in WebCrawlerCSHarp/bin/relase. Remember, being a command line tool, you need to run it from a command line if you want readable output.
+
+Following is the printout from the current -h command, it should give you an idea of what functionality to expect in the current version.
 
 ```
 Required tags for their category are in red and recommended tags are in yellow

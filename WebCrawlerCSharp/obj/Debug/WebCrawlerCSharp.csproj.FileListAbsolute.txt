@@ -1,0 +1,9 @@
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\WebCrawlerCSharp.exe.config
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\WebCrawlerCSharp.exe
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\WebCrawlerCSharp.pdb
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\dotnetcli-0.1.1.dll
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\Supremes.dll
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Debug\WebCrawlerCSharp.exe
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Debug\WebCrawlerCSharp.pdb
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\WebCrawlerCSharp.exe.CodeAnalysisLog.xml
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\bin\Debug\WebCrawlerCSharp.exe.lastcodeanalysissucceeded

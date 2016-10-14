@@ -6,6 +6,7 @@ If you wish to simply run the existing windows binary, the current release is lo
 Following is the printout from the current -h command, it should give you an idea of what functionality to expect in the current version.
 
 ```
+SKS Web crawler/info extractor v0.1
 Required tags for their category are in red and recommended tags are in yellow
 
 Enter the URL followed by tags. Even if you aren't doing a scan, you need a URL
@@ -50,10 +51,10 @@ Output Options:
 -vi,--visited               print visited pages a after completion (n.i.);
 
 Example usages:
-Basic scan: java -jar [JARNAME] http://pornhub.com -di -d 5
+Basic scan: java -jar [JARNAME] http://examplesite.com -di -d 5
 Site Image Gallery: [URL] -di -ddh -g
 Fullsize gallery of 4chan thread: [URL] -di ^((?!s.).)*$ -ddh -g -p .*/((?!#[spq]).)*
-Sankaku tags on posts with urls: [URL] -g -il -ddh -dt title (.*)(/post/show/)(.*) -O -c 1000 -d 3
+Booru tags on posts with urls: [URL] -g -il -ddh -dt title (.*)(/post/show/)(.*) -O -c 1000 -d 3
 Iterative booru tag crawl: [BASEURL] -g -il -ddh -dt title -O -c 1000 -d 1000 -i <startpage>
 Markov chain from 4chan board: [URL] -t 10 -d 15 -dt .post .* -m 2 -g -ddh -O -mp 40
 Insert images into database with tags: [BOORUURL] -g -t 10 -di .*[/](_images/).* -ddh -d 10 -O -p .*[/]post/.* -ul -dt title -dbi)

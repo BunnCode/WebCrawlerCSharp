@@ -18,3 +18,4 @@ G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Release\WebCra
 G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Release\WebCrawlerCSharp.application
 G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Release\WebCrawlerCSharp.exe
 G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Release\WebCrawlerCSharp.pdb
+G:\Dropbox\Dropbox\Projects\WebCrawlerCSharp\WebCrawlerCSharp\obj\Release\WebCrawler.csprojResolveAssemblyReference.cache

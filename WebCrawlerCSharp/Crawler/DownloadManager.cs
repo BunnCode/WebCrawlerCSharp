@@ -9,6 +9,7 @@ using System.Threading;
 using System.Runtime.CompilerServices;
 using System.Collections;
 using System.Threading.Tasks;
+using WebCrawlerCSharp.WebCrawler.ImageDisplay;
 
 namespace WebCrawlerCSharp.Crawler {
     public class DownloadManager {
@@ -99,11 +100,11 @@ namespace WebCrawlerCSharp.Crawler {
                 string elementName = Regex.Replace(absURL.Substring(nameIndex + 1), "[^A-Za-z.]", "");
                 //File location of the element
                 string elementLocation = absURL.Substring(0, nameIndex);
-                if (elementName.Length > 10)
-                    elementName = elementName.Substring(elementName.Length - 10);
+                if (elementName.Length > 20)
+                    elementName = elementName.Substring(elementName.Length - 20);
                 //Inserts hash into filename to avoid duplicates
                 string hashCode = Convert.ToString(content.GetHashCode());
-                elementName = elementName.Insert(elementName.LastIndexOf('.') - 1, hashCode);
+                elementName = elementName.Insert(0, hashCode);
                 FileInfo file;
                 if (!data.gallery)
                     file = new FileInfo(webStringUtils.UrlToDir(elementLocation) + elementName);
@@ -151,8 +152,11 @@ namespace WebCrawlerCSharp.Crawler {
                     string elementName = Regex.Replace(absURL.Substring(nameIndex + 1), "[^A-Za-z.]", "");
                     //File location of the element
                     string elementLocation = absURL.Substring(0, nameIndex);
-                    if (elementName.Length > 10)
-                        elementName.Substring(0, 10);
+                    if (elementName.Length > 20)
+                        elementName = elementName.Substring(elementName.Length - 20);
+                    //Inserts hash into filename to avoid duplicates
+                    string hashCode = Convert.ToString(content.GetHashCode());
+                    elementName = elementName.Insert(0, hashCode);
                     if (!data.gallery)
                         file = new FileInfo(webStringUtils.UrlToDir(elementLocation) + elementName);
                     else
@@ -212,30 +216,34 @@ namespace WebCrawlerCSharp.Crawler {
 
         private static void SaveFiles() {
             while (true) {
-                if (queueStack.Count > 0) {
-                    QueuedFile nextFile = queueStack.Dequeue();
-                    if (nextFile.fileInfo == null)
-                        continue;
-                    //Checks if the next file contains URL info
-                    if (nextFile.url != null) {
-                        Stream stream = null;
-                        HttpWebRequest ElementRequest = (HttpWebRequest)WebRequest.Create(nextFile.url);
-                        ElementRequest.UserAgent = "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
-                        ElementRequest.Referer = "http://google.com";
-                        HttpWebResponse HTMLResponse = (HttpWebResponse)ElementRequest.GetResponse();
-                        Stream streamResponse = HTMLResponse.GetResponseStream();
-                        //Downloads the image and saves it to the memorystream
-                        stream = HTMLResponse.GetResponseStream();
-                        nextFile.stream = stream;
-                        saveFile(nextFile);
-                    }
+                    if (queueStack.Count > 0) {
+                        QueuedFile nextFile = queueStack.Dequeue();
+                        if (nextFile.fileInfo == null)
+                            continue;
+                        //Checks if the next file contains URL info
+                        if (nextFile.url != null) {
+                            Stream stream = null;
+                            HttpWebRequest ElementRequest = (HttpWebRequest)WebRequest.Create(nextFile.url);
+                            ElementRequest.UserAgent = "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
+                            ElementRequest.Referer = "http://google.com";
+                            HttpWebResponse HTMLResponse = (HttpWebResponse)ElementRequest.GetResponse();
+                            Stream streamResponse = HTMLResponse.GetResponseStream();
+                            //Downloads the image and saves it to the memorystream
+                            stream = HTMLResponse.GetResponseStream();
+                            nextFile.stream = stream;
+                            ImageDisplay.printImage(stream);
+                            saveFile(nextFile);
+                        }
 
-                    if(nextFile.stream != null) {
-                        saveFile(nextFile);
+                        if (nextFile.stream != null) {
+                            saveFile(nextFile);
+                            //Print image preview to console
+
+                        }
                     }
-                }
-                if (shouldAnHero)
-                    return;
+                    if (shouldAnHero)
+                        return;
+                
             }
         }
 

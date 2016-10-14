@@ -18,6 +18,6 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartArguments>"http://gelbooru.com/index.php%3fpage=post&amp;s=list&amp;tags=unbirthing&amp;pid=252" -g -t 15 -ddh -d 100 -O -p .%2a[g]elbooru.com/index.php.%2a -ul -dt title -dbl -dbc -dbip localhost</StartArguments>
+    <StartArguments>http://boards.4chan.org/vg/ -di .%2a -ddh -g -p .%2a/%28%28%3f!#[spq]%29.%29%2a -O</StartArguments>
   </PropertyGroup>
 </Project>

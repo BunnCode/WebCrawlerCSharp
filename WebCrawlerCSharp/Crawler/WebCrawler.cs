@@ -274,10 +274,10 @@ namespace WebCrawlerCSharp.Crawler {
             Console.Write(CU.nl + "-vi,--visited               print visited pages a after completion (n.i.);");
             Console.WriteLine();
             Console.Write(CU.nl + "Example usages:");
-            Console.Write(CU.nl + "Basic scan: java -jar [JARNAME] http://pornhub.com -di -d 5");
+            Console.Write(CU.nl + "Basic scan: java -jar [JARNAME] http://examplesite.com -di -d 5");
             Console.Write(CU.nl + "Site Image Gallery: [URL] -di -ddh -g");
             Console.Write(CU.nl + "Fullsize gallery of 4chan thread: [URL] -di ^((?!s.).)*$ -ddh -g -p .*/((?!#[spq]).)*");
-            Console.Write(CU.nl + "Sankaku tags on posts with urls: [URL] -g -il -ddh -dt title (.*)(/post/show/)(.*) -O -c 1000 -d 3");
+            Console.Write(CU.nl + "Booru tags on posts with urls: [URL] -g -il -ddh -dt title (.*)(/post/show/)(.*) -O -c 1000 -d 3");
             Console.Write(CU.nl + "Iterative booru tag crawl: [BASEURL] -g -il -ddh -dt title -O -c 1000 -d 1000 -i <startpage>");
             Console.Write(CU.nl + "Markov chain from 4chan board: [URL] -t 10 -d 15 -dt .post .* -m 2 -g -ddh -O -mp 40");
             Console.Write(CU.nl + "Insert images into database with tags: [BOORUURL] -g -t 10 -di .*[/](_images/).* -ddh -d 10 -O -p .*[/]post/.* -ul -dt title -dbi)" + CU.nl);   

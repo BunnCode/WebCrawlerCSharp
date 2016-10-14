@@ -18,6 +18,6 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartArguments>http://boards.4chan.org/vg/ -di .%2a -ddh -g -p .%2a/%28%28%3f!#[spq]%29.%29%2a -O</StartArguments>
+    <StartArguments>http://boards.4chan.org/vg/ -di .%2a -ddh -g -p .%2a/%28%28%3f!#[spq]%29.%29%2a -O -d 10</StartArguments>
   </PropertyGroup>
 </Project>

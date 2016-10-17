@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>
-    </StartArguments>
+    <StartArguments>"http://rule34.paheal.net/post/list/Nepeta_Leijon/1" -di .%2a[/]_images.%2a  -ddh -g -O -d 10 -t 10 -p .%2arule34.paheal.net[/]%28.%2a%29[N]epeta_Leijon.%2a -ul</StartArguments>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
   </PropertyGroup>
   <PropertyGroup>
     <PublishUrlHistory />
@@ -18,6 +18,6 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <StartArguments>http://boards.4chan.org/vg/ -di .%2a -ddh -g -p .%2a/%28%28%3f!#[spq]%29.%29%2a -O -d 10</StartArguments>
+    <StartArguments>"http://gelbooru.com/index.php%3fpage=post&amp;s=list" -di .%2a[/]/images.%2a  -ddh -g -O -d 10 -t 10 -p .%2apage[=].%2a -ul</StartArguments>
   </PropertyGroup>
 </Project>

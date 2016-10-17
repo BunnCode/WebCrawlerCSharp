@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{8C01AFBC-8D79-4066-B66B-2E4B52DC2DB3}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="WebCrawlerCSharp/Crawler/CrawlWorker.cs">
+    <Files>
+      <File FileName="WebCrawlerCSharp/Crawler/CrawlWorker.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.WebCrawler PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches>
+    <Watch file="../root..kit/Root..Kit/Assets\Scripts\GameLogic\GraphLogic.cs" line="98" offsetX="1397" offsetY="1649" expression="DrawLines.lines" liveUpdate="False" />
+  </MonoDevelop.Ide.DebuggingService.PinnedWatches>
+</Properties>

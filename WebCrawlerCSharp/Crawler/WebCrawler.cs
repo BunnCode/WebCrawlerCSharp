@@ -27,6 +27,7 @@ namespace WebCrawlerCSharp.Crawler {
     }
 
     class WebCrawler {
+        private const float SAVERATE = 1f;
 
         private static ObjSaveUtils objSaveUtils;
         private static WebStringUtils webStringUtils;
@@ -38,9 +39,6 @@ namespace WebCrawlerCSharp.Crawler {
         private static TaskFactory crawlThreadFactory;
         private static Queue<Task<int>> crawlTasks = new Queue<Task<int>>();
         private static CrawlStruct data = new CrawlStruct();
-
-        [DllImport("user32.dll")]
-        static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
         static void Main(string[] args) {
             //Handles early exits
@@ -171,18 +169,26 @@ namespace WebCrawlerCSharp.Crawler {
                     if (fileCmd.HasOption("m"))
                         markovChain = (MarkovChain)objSaveUtils.LoadObject("markov_" + saveFile, typeof(MarkovChain));
                     //Loads the tries
-                    data.urlTrie = (WebTrie)objSaveUtils.LoadObject("vtrie_" + saveFile, typeof(WebTrie));
-                    data.assistTrie = (WebTrie)objSaveUtils.LoadObject("atrie_" + saveFile, typeof(WebTrie));
-                    data.mediaTrie = (WebTrie)objSaveUtils.LoadObject("mtrie_" + saveFile, typeof(WebTrie));
+                    data.urlTrie = (WebTrie)objSaveUtils.LoadObject("visitedTrie_" + saveFile, typeof(WebTrie));
+                    data.assistTrie = (WebTrie)objSaveUtils.LoadObject("assistTrie_" + saveFile, typeof(WebTrie));
+                    data.mediaTrie = (WebTrie)objSaveUtils.LoadObject("assistTrie_" + saveFile, typeof(WebTrie));
                 } else {
                     if (args.Length > 0) saveFile = webStringUtils.UnFuck(args[0]);
                     //If not loading chain from file, create new chain
                     if (fileCmd.HasOption("m"))
                         markovChain = new MarkovChain(Convert.ToInt32(fileCmd.GetOptionValue("m", "3")));
-                    //Generate tries if not loaded
-                    data.urlTrie = new WebTrie();
-                    data.assistTrie = new WebTrie();
-                    data.mediaTrie = new WebTrie();
+                    //Attempts to automatically load file name
+                    try {
+                        data.urlTrie = (WebTrie)objSaveUtils.LoadObject("visitedTrie_" + saveFile, typeof(WebTrie));
+                        data.assistTrie = (WebTrie)objSaveUtils.LoadObject("assistTrie_" + saveFile, typeof(WebTrie));
+                        data.mediaTrie = (WebTrie)objSaveUtils.LoadObject("assistTrie_" + saveFile, typeof(WebTrie));
+                    } catch (Exception) {
+                        //Generate tries if not loadable
+                        data.urlTrie = new WebTrie();
+                        data.assistTrie = new WebTrie();
+                        data.mediaTrie = new WebTrie();
+                    }
+                   
                 }
                 data.outputFolder = fileCmd.GetOptionValue("o", getAppFolder()) + "CrawlResults\\";
 
@@ -255,7 +261,7 @@ namespace WebCrawlerCSharp.Crawler {
             Console.Write(CU.nl + "-g,--gallery                only download files to one folder");
             Console.Write(CU.nl + "-ddh,--HTML                 don't download HTML while crawling");
             Console.Write(CU.nl + "-il,--include link          include links to the parent page in text files");
-            CU.WCol(CU.nl + "-l,--load <filename>", CU.y); Console.Write("        load data from previous scan, named <filename> ");
+            //CU.WCol(CU.nl + "-l,--load <filename>", CU.y); Console.Write("        load data from previous scan, named <filename> ");
             CU.WCol(CU.nl + "-o,--output <dir>", CU.y); Console.Write("           output location (defaults to exe location)");
             Console.Write(CU.nl + "-O,--overwrite              overwrite files when scan starts");
             Console.WriteLine();
@@ -291,7 +297,9 @@ namespace WebCrawlerCSharp.Crawler {
                 try {
                     Directory.Delete(data.outputFolder, true);
                     Console.WriteLine("Deleted old scan files.");
+                    Directory.CreateDirectory(data.outputFolder);
                 } catch (IOException exception) {
+                    Directory.CreateDirectory(data.outputFolder);
                     Console.WriteLine("First scan- Not files to delete.");
                 }
 
@@ -311,7 +319,7 @@ namespace WebCrawlerCSharp.Crawler {
                 //Automatic saving
                 Thread saveThread = new Thread(() => {
                     while (true) {
-                        Thread.Sleep((int)TimeSpan.FromMinutes(5).TotalMilliseconds);
+                        Thread.Sleep((int)TimeSpan.FromMinutes(SAVERATE).TotalMilliseconds);
                         saveScanState();
                     }
                 });
@@ -376,7 +384,6 @@ namespace WebCrawlerCSharp.Crawler {
                 objSaveUtils.SaveObject("markov_" + saveFile, markovChain, true);
                 //Other text processing functions here
             }
-
             objSaveUtils.SaveObject("visitedTrie_" + saveFile, data.urlTrie.Clone(), false);
             objSaveUtils.SaveObject("assistTrie_" + saveFile, data.assistTrie.Clone(), false);
             objSaveUtils.SaveObject("mediaTrie_" + saveFile, data.mediaTrie.Clone(), false);

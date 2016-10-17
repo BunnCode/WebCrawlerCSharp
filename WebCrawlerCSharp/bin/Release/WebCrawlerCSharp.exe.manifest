@@ -102,14 +102,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WebCrawlerCSharp.exe" size="687544">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="WebCrawlerCSharp.exe" size="688056">
       <assemblyIdentity name="WebCrawlerCSharp" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>i9205rA2XVEz1k7EvJSm9cDSBJXWf5uIGh1IXu14d7k=</dsig:DigestValue>
+        <dsig:DigestValue>K5/WajUqLOdhnoXiNP6v5QVCrsqYG6kgAsv3vkwthDs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

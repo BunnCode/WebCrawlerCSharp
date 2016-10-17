@@ -26,21 +26,16 @@ namespace WebCrawlerCSharp.Crawler {
         public string workingURL;
         public bool isFinished;
         private CrawlStruct data;
-        /**
-         * Threaded worker for scanning webpages. Automatically creates other copies
-         * of itself and divides work for quicker scanning.
-         *
-         * @param threadName the name of the worker
-         * @param urlTrie the trie containing visited pages
-         * @param url the url to target
-         * @param maxDepth the maximum depth of the search
-         * @param startDepth the start depth of this worker
-         * @param maxBreadth the maximum breadth of the search
-         * @param sidedness the side this worker operates on (false = left, true =
-         * right)
-         * @param backCrawl enables backcrawling to find hidden pages
-         * @param crawlDomain the domain the search is operating within
-         */
+
+      /// <summary>
+      ///  Threaded worker for scanning webpages. Automatically creates other copies
+      ///  of itself and divides work for quicker scanning.
+      /// </summary>
+      /// <param name="id"></param>
+      /// <param name="url"></param>
+      /// <param name="startDepth"></param>
+      /// <param name="sidedness"></param>
+      /// <param name="data"></param>
         public CrawlWorker(int id, string url, int startDepth, bool sidedness, CrawlStruct data) {
             this.id = id;
             this.startURL = url;
@@ -55,8 +50,6 @@ namespace WebCrawlerCSharp.Crawler {
             }
 
             downloadManager = new DownloadManager(data);
-            //The depth at which the other crawler is assisting
-
             this.pagesCrawled = 0;
 
             webStringUtils = new WebStringUtils(data.outputFolder);
@@ -125,7 +118,7 @@ namespace WebCrawlerCSharp.Crawler {
                 if (!Regex.IsMatch(url, data.crawlPattern) || !Regex.IsMatch(url, data.crawlDomain) || data.urlTrie.contains(url)) {
                     return newPages;
                 }
-                //Bounces from DB 
+                //Bounces via DB if flag is checked
                 if (data.dataBaseCheck) {
                     Task<bool> isInDB = Task.Run(() => TagDBDriver.entryExists(url));
                     isInDB.Wait();
@@ -239,7 +232,8 @@ namespace WebCrawlerCSharp.Crawler {
                         Elements imageElements = HTMLDoc.Select("img");
                         if (imageElements != null) {
                             //Append links to images as well
-                            foreach (Element element in imageElements)
+                            
+                            foreach (Element element in links)
                                 if (Regex.IsMatch(element.AbsUrl("href"), ".*(.jpg|.png|.gif|.webm)")) {
                                     imageElements.Add(element);
                                 }
@@ -300,7 +294,8 @@ namespace WebCrawlerCSharp.Crawler {
                         //Also ignore links to other pages positioned along the iterative crawl
                         if (string.IsNullOrEmpty(currentLinkRight) || currentLinkRight.Equals(url)
                             || (data.iterative && currentLinkRight.Substring(0, currentLinkRight.LastIndexOf('/') + 1).Equals(data.startURL))
-                            || (currentLinkRight.Contains('#') && currentLinkRight.Substring(0, currentLinkRight.LastIndexOf('#')).Equals(url))) {
+                            || (currentLinkRight.Contains('#') && currentLinkRight.Substring(0, currentLinkRight.LastIndexOf('#')).Equals(url))
+                            || links[i].HasAttr("rel")) {
                             {
                                 i--;
                                 continue;
@@ -325,7 +320,8 @@ namespace WebCrawlerCSharp.Crawler {
                         string test = currentLinkLeft.Substring(0, currentLinkLeft.LastIndexOf('/') + 1);
                         if (string.IsNullOrEmpty(currentLinkLeft) || currentLinkLeft.Equals(url)
                             || (data.iterative && currentLinkLeft.Substring(0, currentLinkLeft.LastIndexOf('/') + 1).Equals(data.startURL))
-                            || (currentLinkLeft.Contains('#') && currentLinkLeft.Substring(0, currentLinkLeft.LastIndexOf('#')).Equals(url))) {
+                            || (currentLinkLeft.Contains('#') && currentLinkLeft.Substring(0, currentLinkLeft.LastIndexOf('#')).Equals(url))
+                            || links[i].HasAttr("rel")) {
                             i++;
                             continue;
                         }

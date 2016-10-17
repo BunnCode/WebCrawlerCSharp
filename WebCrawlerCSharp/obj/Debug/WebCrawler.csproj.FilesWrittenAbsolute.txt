@@ -1,0 +1,9 @@
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/obj/Debug/.NETFramework,Version=v4.5.2.AssemblyAttribute.cs
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/obj/Debug/WebCrawlerCSharp.WebCrawler.Properties.Resources.resources
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/obj/Debug/WebCrawlerCSharp.exe
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/obj/Debug/WebCrawlerCSharp.exe.mdb
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/bin/Debug/dotnetcli-0.1.1.dll
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/bin/Debug/MongoDB.Bson.dll
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/bin/Debug/MongoDB.Driver.dll
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/bin/Debug/MongoDB.Driver.Core.dll
+/Users/Smartass/Dropbox/Projects/WebCrawlerCSharp/WebCrawlerCSharp/bin/Debug/Supremes.dll

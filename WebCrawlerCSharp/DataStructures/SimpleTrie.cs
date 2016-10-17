@@ -20,7 +20,7 @@ namespace DataStructures.SimpleTrie
 
         public SimpleTrie Clone() {
             SimpleTrie trie = new SimpleTrie();
-            trie.root = root;
+            trie.root = root.Clone(root);
             return trie;
         }
 
@@ -49,7 +49,7 @@ namespace DataStructures.SimpleTrie
             }
             return node;
         }
-
+        
         [MethodImpl(MethodImplOptions.Synchronized)]
         public virtual bool contains(string value)
         {
@@ -111,6 +111,16 @@ namespace DataStructures.SimpleTrie
         public Dictionary<string, TrieNode> children { get; set; }
         [DataMember]
         public bool isleaf { get; set; }
+
+        public TrieNode Clone(TrieNode oldNode) {
+            TrieNode copiedNode = new TrieNode(oldNode.val);
+            copiedNode.isleaf = oldNode.isleaf;
+            foreach(KeyValuePair<string, TrieNode> child in children ?? new Dictionary<string, TrieNode>()) {
+                TrieNode newChild = child.Value.Clone(child.Value);
+                copiedNode.children.Add(child.Key, newChild);
+            }
+            return copiedNode;
+        }
 
         public TrieNode()
         {

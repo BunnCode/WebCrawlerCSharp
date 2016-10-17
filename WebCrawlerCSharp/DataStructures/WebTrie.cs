@@ -16,9 +16,9 @@ namespace DataStructures.SimpleTrie
 
         }
 
-        public WebTrie Clone() {
+        new public WebTrie Clone() {
             WebTrie trie = new WebTrie();
-            trie.root = root;
+            trie.root = root.Clone(root);
             return trie;
         }
 
@@ -27,7 +27,7 @@ namespace DataStructures.SimpleTrie
         {
             //Splits the string by directory
             value = removeHeader(value);
-            string[] valueSplit = value.Split(new char[] { '/', '&' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] valueSplit = Regex.Split(value, "[^A-Za-z0-9]");
             TrieNode node = base.insertVal(valueSplit[0]);
             int Length = valueSplit.Length - 1;
             for (int i = 0; i < Length; i++)
@@ -61,7 +61,7 @@ namespace DataStructures.SimpleTrie
         public override TrieNode search(string value)
         {
             value = removeHeader(value);
-            string[] valueSplit = value.Split(new char[] { '/', '&' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] valueSplit = Regex.Split(value, "[^A-Za-z0-9]");
             //Early cancellation should the site not be in the baseTrie
             TrieNode node = base.search(valueSplit[0]);
             if (!(node != null && node.isleaf))

@@ -143,10 +143,11 @@ namespace WebCrawlerCSharp.Crawler {
                         absURL = content.AbsUrl("src");
                         break;
                 }
+                data.mediaTrie.InsertURL(absURL);
                 FileInfo file;
                 //Doesn't recaculate file info if it doesn't have to
                 if (fileInfo == null) {
-                   
+
                     int nameIndex = absURL.LastIndexOf('/');
                     //Name of the element
                     string elementName = Regex.Replace(absURL.Substring(nameIndex + 1), "[^A-Za-z.]", "");
@@ -165,7 +166,7 @@ namespace WebCrawlerCSharp.Crawler {
                     file = fileInfo[i];
                 }
 
-                data.mediaTrie.InsertURL(absURL);
+
                 //Defers downloading to the saver
                 Save(absURL, file);
                 //Sleeps to slow down image requests 
@@ -195,7 +196,7 @@ namespace WebCrawlerCSharp.Crawler {
                 fileMode = FileMode.CreateNew;
             saveQueue.AddToQueue(new QueuedFile(url, fileInfo, fileMode));
         }
-       
+
     }
 
     //Handles saving to disk
@@ -204,9 +205,15 @@ namespace WebCrawlerCSharp.Crawler {
         private static FileStream fileStream;
         private static Thread saveThread;
         private static bool shouldAnHero;
+        private const int MAXCONSECUTIVEDOWNLOADS = 10;
+        private static WebClient testClient;
+        private static LimitedConcurrencyLevelTaskScheduler downloadThreadExecutor;
+        private static TaskFactory downloadThreadFactory;
 
         static SaveQueue() {
             saveThread = new Thread(() => SaveFiles());
+            downloadThreadExecutor = new LimitedConcurrencyLevelTaskScheduler(MAXCONSECUTIVEDOWNLOADS);
+            downloadThreadFactory = new TaskFactory(downloadThreadExecutor);
             saveThread.Start();
         }
         //Adds files to the queue
@@ -214,36 +221,57 @@ namespace WebCrawlerCSharp.Crawler {
             queueStack.Enqueue(newFile);
         }
 
-        private static void SaveFiles() {
+        private static async void SaveFiles() {
+            Queue<Task> downloadTasks = new Queue<Task>();
+
             while (true) {
-                    if (queueStack.Count > 0) {
-                        QueuedFile nextFile = queueStack.Dequeue();
-                        if (nextFile.fileInfo == null)
-                            continue;
-                        //Checks if the next file contains URL info
-                        if (nextFile.url != null) {
-                            Stream stream = null;
-                            HttpWebRequest ElementRequest = (HttpWebRequest)WebRequest.Create(nextFile.url);
-                            ElementRequest.UserAgent = "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
-                            ElementRequest.Referer = "http://google.com";
-                            HttpWebResponse HTMLResponse = (HttpWebResponse)ElementRequest.GetResponse();
-                            Stream streamResponse = HTMLResponse.GetResponseStream();
-                            //Downloads the image and saves it to the memorystream
-                            stream = HTMLResponse.GetResponseStream();
-                            nextFile.stream = stream;
-                            ImageDisplay.printImage(stream);
-                            saveFile(nextFile);
-                        }
-
-                        if (nextFile.stream != null) {
-                            saveFile(nextFile);
-                            //Print image preview to console
-
-                        }
+                if (queueStack.Count > 0) {
+                    QueuedFile nextFile = queueStack.Dequeue();
+                    if (nextFile.fileInfo == null)
+                        continue;
+                    //Checks if the next file contains URL info
+                    if (nextFile.url != null) {
+                        Task newDownload = downloadThreadFactory.StartNew(() => downloadFile(nextFile));
+                        downloadTasks.Enqueue(newDownload);
+                    } else {
+                        saveFile(nextFile);
+                        //Print image preview to console
                     }
-                    if (shouldAnHero)
-                        return;
-                
+                }
+                while (downloadTasks.Count > 0) {
+                    Task finishedTask = downloadTasks.Dequeue();
+                    finishedTask.Wait();
+                }
+                //Ded
+                if (shouldAnHero)
+                    return;
+
+            }
+        }
+
+        //Allows for concurrent downloading of files
+        //Allows for concurrent downloading of files
+        private static async void downloadFile(QueuedFile nextFile) {
+            testClient = new WebClient();
+            testClient.Proxy = GlobalProxySelection.GetEmptyWebProxy();
+            try {
+                /**Stream stream = null;
+                HttpWebRequest ElementRequest = (HttpWebRequest)WebRequest.Create(nextFile.url);
+                ElementRequest.UserAgent = "Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
+                ElementRequest.Referer = "http://google.com";
+                HttpWebResponse HTMLResponse = (HttpWebResponse)ElementRequest.GetResponse();
+                Stream streamResponse = HTMLResponse.GetResponseStream();
+                //Downloads the image and saves it to the memorystream
+                stream = HTMLResponse.GetResponseStream();
+                nextFile.stream = stream;**/
+                //Attempting to fix 403 error on many fullsize image loads
+                byte[] testBytes = await testClient.DownloadDataTaskAsync(new Uri(nextFile.url));
+                nextFile.stream = new MemoryStream(testBytes);
+                //ImageDisplay.printImage(stream);
+                saveFile(nextFile);
+            } catch (Exception e) {
+                CU.WCol(CU.nl + "Could not download image at url " + nextFile.url + " : " + e + CU.nl, CU.r, CU.y);
+                CU.WCol(CU.nl + e.StackTrace + CU.nl, CU.r, CU.y);
             }
         }
 
@@ -257,7 +285,7 @@ namespace WebCrawlerCSharp.Crawler {
         }
 
         public static void killService() {
-            shouldAnHero = true;
+            // shouldAnHero = true;
         }
     }
     //File to save
